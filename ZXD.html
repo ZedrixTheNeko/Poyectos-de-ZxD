@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broma ZXD</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: black;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            color: #8A2BE2;
+        }
+
+        #matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: black;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        #content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            color: #8A2BE2;
+        }
+
+        #zxd {
+            font-size: 50px;
+            font-weight: bold;
+            animation: blink 1s infinite alternate;
+        }
+
+        @keyframes blink {
+            from {
+                color: #FF69B4; /* Rosa */
+            }
+            to {
+                color: #8A2BE2; /* Morado */
+            }
+        }
+
+        #passwordInput {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div id="matrix"></div>
+
+    <div id="content">
+        <div id="zxd">ZXD</div>
+        <p>Ingresar Contraseña:</p>
+        <input type="password" id="passwordInput" placeholder="Introduce la contraseña">
+    </div>
+
+    <script>
+        // Matrix background effect
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        document.getElementById('matrix').appendChild(canvas);
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const symbols = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#8A2BE2'; // Morado
+            ctx.font = `${fontSize}px monospace`;
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = symbols[Math.floor(Math.random() * symbols.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.95) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 50);
+
+        // Show password input after a delay
+        setTimeout(() => {
+            const passwordInput = document.getElementById('passwordInput');
+            passwordInput.focus();
+        }, 3000);
+
+        // Unlock with password
+        document.getElementById('passwordInput').addEventListener('keyup', (event) => {
+            if (event.target.value === 'Zedrix2008777') {
+                alert("¡Desbloqueado!");
+                location.reload(); // Simula "liberar" todo
+            }
+        });
+
+        // Unlock with three-finger double tap
+        let touchCount = 0;
+        window.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 3) {
+                touchCount++;
+                setTimeout(() => (touchCount = 0), 500); // Reset touch count after 500ms
+                if (touchCount === 2) {
+                    alert('¡Desbloqueado con gesto secreto!');
+                    location.reload(); // Simula "liberar" todo
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+Este tiene la animacion de la matrix?
